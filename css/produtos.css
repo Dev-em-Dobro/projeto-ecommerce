@@ -80,6 +80,8 @@ main .informacoes .adicionar-ao-carrinho {
   padding: 1rem;
   cursor: pointer;
   margin-top: 0.5rem;
+  letter-spacing: 0.1rem;
+  font-size: 1.2rem;
   transition: background-color 0.3s ease-in-out;
 }
 
