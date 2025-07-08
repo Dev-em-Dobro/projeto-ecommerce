@@ -28,6 +28,11 @@
   margin-bottom: 2rem;
 }
 
+.modal header h2 {
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+}
+
 .modal header .fechar {
   background-image: url(../assets/images/icone_fechar.svg);
   width: 24px;
@@ -179,8 +184,11 @@ td .btn-remover {
 
   .finalizar-compra {
     width: 369px;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.1rem;
   }
-  
+
   .td-quantidade {
     text-align: center;
   }
