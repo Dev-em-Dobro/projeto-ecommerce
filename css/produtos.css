@@ -48,6 +48,8 @@ main .informacoes {
   flex-direction: column;
   gap: 0.5rem;
   padding: 0 1.5rem 1.5rem;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 
 main .informacoes span {
