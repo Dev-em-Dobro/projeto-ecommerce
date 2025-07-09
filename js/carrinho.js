@@ -36,21 +36,29 @@ botoesAdicionarAoCarrinho.forEach(btn => {
 		// Pega as informações do produto
 		const id = produtoElemento.getAttribute("data-id");
 		const nome = produtoElemento.querySelector(".nome").textContent;
-		const preco = produtoElemento.querySelector(".preco").textContent;
+		const preco = parseFloat(produtoElemento.querySelector(".preco").textContent.replace("R$ ", "").replace(",", "."));
 		const imagem = produtoElemento.querySelector("img").getAttribute("src");
 
-        const produto = {
-            id: id,
-            nome: nome,
-            preco: preco,
-            imagem: imagem,
-            quantidade: 1
-        };
+        const carrinho = obterProdutosDoCarrinho();
+        const existente = carrinho.find(produto => produto.id === id);
+        
+        if(existente){
+            existente.quantidade += 1;
+        }else{
+            carrinho.push({
+                id: id,
+                nome: nome,
+                preco: preco,
+                imagem: imagem,
+                quantidade: 1
+            })
+        }
 
-        localStorage.setItem('carrinho', JSON.stringify(produto));
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
         
 	});
 });
+
 
 function obterProdutosDoCarrinho(){
     const produtos = localStorage.getItem('carrinho');
