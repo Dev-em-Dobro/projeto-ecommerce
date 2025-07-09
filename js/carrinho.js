@@ -51,3 +51,9 @@ botoesAdicionarAoCarrinho.forEach(btn => {
         
 	});
 });
+
+function obterProdutosDoCarrinho(){
+    const produtos = localStorage.getItem('carrinho');
+    
+    return produtos ? JSON.parse(produtos) : [];
+}
