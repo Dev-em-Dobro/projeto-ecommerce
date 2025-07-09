@@ -34,23 +34,20 @@ botoesAdicionarAoCarrinho.forEach(btn => {
 		const produtoElemento = btn.closest(".produto");
 
 		// Pega as informações do produto
-		const produtoId = produtoElemento.dataset.id;
-		const produtoNome = produtoElemento.querySelector(".nome").textContent;
-		const produtoPreco = produtoElemento.querySelector(".preco").textContent.replace("R$", "").replace(".", "").replace(",", "");
-		const produtoImagem = produtoElemento.querySelector("img").getAttribute("src");
+		const id = produtoElemento.getAttribute("data-id");
+		const nome = produtoElemento.querySelector(".nome").textContent;
+		const preco = produtoElemento.querySelector(".preco").textContent;
+		const imagem = produtoElemento.querySelector("img").getAttribute("src");
 
-		const produto = {
-			id: produtoId,
-			nome: produtoNome,
-			preco: produtoPreco,
-			imagem: produtoImagem,
-		};
+        const produto = {
+            id: id,
+            nome: nome,
+            preco: preco,
+            imagem: imagem,
+            quantidade: 1
+        };
 
-		localStorage.setItem("carrinho", JSON.stringify(produto));
+        localStorage.setItem('carrinho', JSON.stringify(produto));
+        
 	});
 });
-
-function obterProdutosDoCarrinho() {
-	const produtos = localStorage.getItem("carrinho");
-	return produtos ? JSON.parse(produtos) : [];
-}
