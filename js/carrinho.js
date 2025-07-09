@@ -39,29 +39,43 @@ botoesAdicionarAoCarrinho.forEach(btn => {
 		const preco = parseFloat(produtoElemento.querySelector(".preco").textContent.replace("R$ ", "").replace(",", "."));
 		const imagem = produtoElemento.querySelector("img").getAttribute("src");
 
-        const carrinho = obterProdutosDoCarrinho();
-        const existente = carrinho.find(produto => produto.id === id);
-        
-        if(existente){
-            existente.quantidade += 1;
-        }else{
-            carrinho.push({
-                id: id,
-                nome: nome,
-                preco: preco,
-                imagem: imagem,
-                quantidade: 1
-            })
-        }
+		const carrinho = obterProdutosDoCarrinho();
+		const existente = carrinho.find(produto => produto.id === id);
 
-        localStorage.setItem('carrinho', JSON.stringify(carrinho));
-        
+		if (existente) {
+			existente.quantidade += 1;
+		} else {
+			carrinho.push({
+				id: id,
+				nome: nome,
+				preco: preco,
+				imagem: imagem,
+				quantidade: 1,
+			});
+		}
+
+		localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        atualizarContadorDoCarrinho();
 	});
 });
 
+// passo 4 - atualizar o contador do carrinho de compras
+function atualizarContadorDoCarrinho() {
+    const carrinho = obterProdutosDoCarrinho();
+    let total = 0;
 
-function obterProdutosDoCarrinho(){
-    const produtos = localStorage.getItem('carrinho');
-    
-    return produtos ? JSON.parse(produtos) : [];
+    for (const produto of carrinho) {
+        total += produto.quantidade;
+    }
+
+    document.getElementById("contador-carrinho").textContent = total;
+}
+
+
+atualizarContadorDoCarrinho();
+
+function obterProdutosDoCarrinho() {
+	const produtos = localStorage.getItem("carrinho");
+
+	return produtos ? JSON.parse(produtos) : [];
 }
