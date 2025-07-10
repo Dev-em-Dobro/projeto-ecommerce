@@ -12,7 +12,7 @@ Objetivo 2 - remover produtos do carrinho
     passo 2 - adicionar evento de escuta no botão
     passo 3 - remover o produto do localStorage
     passo 4 - atualizar o html do carrinho retirando o produto
-    passo 5 - atualizar o valor
+    passo 5 - atualizar o valor do carrinho
 
 Objetivo 3 - Atualizar os valores do carrinho
     passo 1 - pegar o input de quantidade do carrinho
@@ -90,7 +90,6 @@ atualizarContadorCarrinho();
 function renderizarTabelaDoCarrinho() {
 	const produtos = obterProdutosDoCarrinho();
 	const corpoTabela = document.querySelector("#modal-1-content table tbody");
-	console.log(corpoTabela);
 
 	corpoTabela.innerHTML = ""; // Limpar tabela antes de renderizar
 
@@ -114,3 +113,27 @@ function renderizarTabelaDoCarrinho() {
 }
 
 renderizarTabelaDoCarrinho();
+
+// Objetivo 2 - remover produtos do carrinho
+//     passo 1  - pegar o botão de deletar do html
+const corpoTabela = document.querySelector("#modal-1-content table tbody");
+corpoTabela.addEventListener("click", evento => {
+	console.log("entrou aqui");
+	console.log(evento.target.classList.contains("btn-remover"));
+
+	if (evento.target.classList.contains("btn-remover")) {
+		const id = evento.target.dataset.id;
+		removerProdutoDoCarrinho(id);
+	}
+});
+
+function removerProdutoDoCarrinho(id) {
+	const produtos = obterProdutosDoCarrinho();
+
+	//filtrar os produtos que não tem o id passado por parametro
+	const carrinhoAtualizado = produtos.filter(produto => produto.id !== id);
+
+	salvarProdutosNoCarrinho(carrinhoAtualizado);
+	atualizarContadorCarrinho();
+	renderizarTabelaDoCarrinho();
+}
