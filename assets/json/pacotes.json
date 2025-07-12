@@ -1,0 +1,20 @@
+{
+  "products": [
+    {
+      "id": "camiseta-roxa",
+      "quantity": 1,
+      "height": 2,
+      "length": 25,
+      "width": 20,
+      "weight": 0.2
+    },
+    {
+      "id": "caneca-branca",
+      "quantity": 1,
+      "height": 10,
+      "length": 10,
+      "width": 10,
+      "weight": 0.3
+    }
+  ]
+}
