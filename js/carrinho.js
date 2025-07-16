@@ -156,6 +156,7 @@ function atualizarValorTotalCarrinho() {
 	const produtos = obterProdutosDoCarrinho();
 	const total = produtos.reduce((soma, produto) => soma + produto.preco * produto.quantidade, 0);
 	document.querySelector("#total-carrinho").textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+	document.querySelector("#subtotal-pedidos .valor").textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
 }
 
 function atualizarCarrinhoETabela(){
@@ -165,3 +166,61 @@ function atualizarCarrinhoETabela(){
 }
 
 atualizarCarrinhoETabela();
+
+async function calcularFrete(cep) {
+	const url = "https://robertodias.app.n8n.cloud/webhook/f5282aac-8835-41e2-aefc-06545890bcf2";
+	try {
+		// Busca as medidas dos produtos do arquivo JSON
+		const medidasResponse = await fetch('./js/medidas-produtos.json');
+		const medidas = await medidasResponse.json();
+
+		// Monta o array de produtos do carrinho com as medidas corretas
+		const produtos = obterProdutosDoCarrinho();
+		const products = produtos.map(produto => {
+			// Procura as medidas pelo id do produto
+			const medida = medidas.find(m => m.id === produto.id);
+			return {
+				quantity: produto.quantidade,
+				height: medida ? medida.height : 4,
+				length: medida ? medida.length : 30,
+				width: medida ? medida.width : 25,
+				weight: medida ? medida.weight : 0.25
+			};
+		});
+
+		const resposta = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({cep, products}),
+		});
+		if (!resposta.ok) throw new Error("Erro ao calcular frete");
+		const resultado = await resposta.json();
+		// Supondo que o resultado tenha a propriedade frete
+		return resultado.price;
+	} catch (erro) {
+		console.error("Erro ao calcular frete:", erro);
+		return null;
+	}
+}
+
+const btnCalcularFrete = document.getElementById("btn-calcular-frete");
+const inputCep = document.getElementById("input-cep");
+const valorFrete = document.getElementById("valor-frete");
+
+btnCalcularFrete.addEventListener("click", async () => {
+	const cep = inputCep.value.trim();
+	const valorFrete = await calcularFrete(cep);	
+	const precoFormatado = valorFrete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+	document.querySelector("#valor-frete .valor").textContent = precoFormatado;
+	document.querySelector("#valor-frete").style.display = "flex";
+
+	const totalCarrinhoElemento = document.querySelector("#total-carrinho");
+	const valorTotalCarrinho = parseFloat(totalCarrinhoElemento.textContent.replace("Total: R$ ", "").replace('.', ',').replace(',', '.'));
+	
+	const totalComFrete = valorTotalCarrinho + valorFrete;
+	const totalComFreteFormatado = totalComFrete.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+	totalCarrinhoElemento.textContent = `Total: R$ ${totalComFreteFormatado}`;
+});
+
