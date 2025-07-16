@@ -168,6 +168,10 @@ function atualizarCarrinhoETabela(){
 atualizarCarrinhoETabela();
 
 async function calcularFrete(cep) {
+	btnCalcularFrete.disabled = true;
+	const textoOriginalDoBotaoDeFrete = btnCalcularFrete.textContent;
+	btnCalcularFrete.textContent = "Calculando frete...";
+
 	const url = "https://robertodias.app.n8n.cloud/webhook/f5282aac-8835-41e2-aefc-06545890bcf2";
 	try {
 		// Busca as medidas dos produtos do arquivo JSON
@@ -202,6 +206,9 @@ async function calcularFrete(cep) {
 	} catch (erro) {
 		console.error("Erro ao calcular frete:", erro);
 		return null;
+	}finally{
+		btnCalcularFrete.disabled = false;
+		btnCalcularFrete.textContent = textoOriginalDoBotaoDeFrete;
 	}
 }
 
