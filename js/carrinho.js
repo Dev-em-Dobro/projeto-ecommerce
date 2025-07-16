@@ -209,6 +209,12 @@ const btnCalcularFrete = document.getElementById("btn-calcular-frete");
 const inputCep = document.getElementById("input-cep");
 const valorFrete = document.getElementById("valor-frete");
 
+inputCep.addEventListener("keydown", () => {
+	if(event.key === "Enter") {
+		btnCalcularFrete.click();
+	}
+});
+
 btnCalcularFrete.addEventListener("click", async () => {
 	const cep = inputCep.value.trim();
 
